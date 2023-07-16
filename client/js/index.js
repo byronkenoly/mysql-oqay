@@ -12,6 +12,10 @@ document.querySelector('table tbody').addEventListener('click', function(event){
     if (event.target.className === "edit-row-btn"){
         editRowById(event.target.dataset.id);
     }
+
+    if (event.target.className === "add-img-btn"){
+        addImgById(event.target.dataset.id);
+    }
 });
 
 function deleteRowById(id){
@@ -28,13 +32,41 @@ function deleteRowById(id){
 
 function editRowById(id){
     const updateSection = document.querySelector('#update-row');
+    document.querySelector('#add-img-row').hidden = true;
     updateSection.hidden = false;
     document.querySelector('#update-product-btn').dataset.id = id;
 }
 
+function addImgById(id){
+    const addImgSection = document.querySelector('#add-img-row');
+    document.querySelector('#update-row').hidden = true;
+    addImgSection.hidden = false;
+    document.querySelector('#upload-image-btn').dataset.id = id;
+}
+
 const addBtn = document.querySelector('#add-product-btn');
 const updateBtn = document.querySelector('#update-product-btn');
-const searchBtn = document.querySelector('#search-btn')
+const searchBtn = document.querySelector('#search-btn');
+const addImgBtn = document.querySelector('#upload-image-btn');
+
+addImgBtn.onclick = function(event){
+    event.preventDefault();
+    const id = document.querySelector('#upload-image-btn').dataset.id;
+    const file = document.querySelector('#image-input');
+
+    const formData = new FormData();
+
+    formData.append('id', id);
+    formData.append('file', file.files[0]);
+
+    //console.log(...formData);
+    fetch('http://localhost:5000/upload', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+}
 
 searchBtn.onclick = function(){
     const searchValue = document.querySelector('#search-input').value;
@@ -150,6 +182,7 @@ function loadHTMLTable(data){
         tableHtml += `<td>${new Date(date_added).toLocaleString()}</td>`;
         tableHtml += `<td><button class="delete-row-btn" data-id=${id}>Delete</button></td>`;
         tableHtml += `<td><button class="edit-row-btn" data-id=${id}>Edit</button></td>`;
+        tableHtml += `<td><button class="add-img-btn" data-id=${id}>Add Image</button></td>`;
         tableHtml += "</tr>";
     });
 

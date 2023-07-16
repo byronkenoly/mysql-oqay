@@ -134,6 +134,34 @@ class DbService {
             console.error(error);
         }
     }
+
+    async addImageById(filename, id){
+        try {
+            id = parseInt(id, 10);
+
+            if (isNaN(id)) {
+                throw new Error('Invalid ID');
+            }
+            const insertImgId = await new Promise((resolve, reject) => {
+                const query = "INSERT INTO images (filename, id) VALUES (?, ?);";
+
+                connection.query(query, [filename, id], (err, result) => {
+                    if (err){
+                        reject(new Error(err.message));
+                    }
+
+                    resolve(result);
+                })
+            });
+
+            return {
+                image_id: insertImgId,
+                filename: filename
+            }
+        } catch (err){
+            console.error(err);
+        }
+    }
 }
 
 module.exports = DbService;

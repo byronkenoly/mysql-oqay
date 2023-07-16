@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/index.css">
+    <link rel="shortcut icon" type="image/png" href="../img/favicon-32x32.png"/>
     <title>oqay admin</title>
 </head>
 <body>
@@ -25,6 +26,7 @@
             <th>Date Added</th>
             <th>Delete</th>
             <th>Edit</th>
+            <th>Add Image</th>
         </thead>
         <tbody>
             
@@ -38,6 +40,12 @@
             <input type="text" id="mass-update" class="update" placeholder="Mass">
             <button type="submit" class="btn" id="update-product-btn">Update</button>
           </form>
+    </section>
+    <section hidden id="add-img-row">
+        <form action="/upload" method="post" enctype="multipart/form-data" id="image-form">
+            <input name="img" type="file" class="update" accept="image/*" id="image-input">
+            <button type="submit" class="btn" id="upload-image-btn">Upload</button>
+        </form>
     </section>
 
     <script src="../js/index.js"></script>

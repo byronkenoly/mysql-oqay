@@ -14,6 +14,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('../client'));
 
+const imgPath = path.join(__dirname, 'img');
+app.use('/img', express.static(imgPath));
+
 const storage = multer.diskStorage({
     destination: './img/',
     filename: (req, file, cb) => {
@@ -52,6 +55,17 @@ app.get('/getAll', (req, res) => {
     .then(data => res.json({data : data}))
     .catch(err => console.error(err));
 });
+
+//read product data to client side
+app.get('/clientProducts', (req, res) =>{
+    const db = dbService.getDbServiceInstance();
+
+    const result = db.getClientProducts();
+
+    result
+    .then(data => res.json({data : data}))
+    .catch(err => console.error(err))
+})
 
 //delete
 app.delete('/delete/:id', (req, res) => {

@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', function(){
-    fetch('http://localhost:5000/clientProducts')
+    fetch('http://localhost:5000/newArrivals')
     .then(res => res.json())
-    .then(data => loadProducts(data['data']));
+    .then(data => loadNewProducts(data['data']));
 });
 
 
-function loadProducts(data){
-    const products = document.querySelector('.pro-container');
+function loadNewProducts(data){
+    const products = document.querySelector('.newarrival-container');
     let productsHtml = "";
 
     data.forEach(function({product, price, filename}){
@@ -157,3 +157,54 @@ function computeTotal(){
         document.getElementsByClassName('total-figure')[0].innerText = 'Ksh. ' + total;
     }
 }
+
+function placeOrder(){
+    let cartContent = document.getElementsByClassName('cart-content')[0];
+    let cartBoxes = cartContent.getElementsByClassName('cart-box');
+
+    let myCart = [];
+    let total = {};
+    total['total'] = document.getElementsByClassName('total-figure')[0].innerText;
+
+    for (let i = 0; i < cartBoxes.length; i++){
+        let itemObject = {};
+        let cartBox = cartBoxes[i];
+
+        let nameElement = cartBox.getElementsByClassName('product-title')[0];
+        let name = nameElement.innerText;
+
+        let quantityElement = cartBox.getElementsByClassName('product-quantity')[0];
+        let quantity = quantityElement.value;
+
+        let priceElement = cartBox.getElementsByClassName('product-price')[0];
+        let price = parseFloat(priceElement.innerText.replace('Ksh. ', ''));
+
+        itemObject['name'] = name;
+        itemObject['quantity'] = quantity;
+        itemObject['price'] = price;
+
+        myCart.push(itemObject);
+    }
+
+    myCart.push(total);
+
+    Email.send({
+        Host : "smtp.elasticemail.com",
+        Username : "byronochieng01@gmail.com",
+        Password : "4842F76D9512384AB4CC4812038F6DA0EB9A",
+        To : 'lempitse32@gmail.com',
+        From : "byronochieng01@gmail.com",
+        Subject : "ORDER",
+        Body : myCart
+    }).then(
+      message => alert(message)
+    );
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+    let buyBtn = document.querySelector('.place_order_btn');
+    buyBtn.onclick = function(e){
+        e.preventDefault();
+        placeOrder();
+    };
+})

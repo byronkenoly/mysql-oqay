@@ -74,3 +74,20 @@ button a {
     text-decoration: none;
     color: #000;
 }
+
+@media screen and (max-width: 950px) {
+    .about {
+        height: auto;
+        width: 100%;
+        padding: 60px 0;
+    }
+
+    .all-text {
+        text-align: center;
+        margin-top: 40px;
+    }
+
+    .about .main img {
+        width: 408px;
+    }
+}

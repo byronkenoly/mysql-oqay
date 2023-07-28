@@ -36,6 +36,12 @@ let cartIcon = document.querySelector('.header-cart');
 let cartPopup = document.querySelector('.cart-popup');
 let closeCart = document.querySelector('.close-mark');
 
+let cartIcon2 = document.querySelector('.header-carto');
+
+cartIcon2.onclick = function (){
+    cartPopup.classList.add("active");
+}
+
 //open cart
 cartIcon.onclick = function (){
     cartPopup.classList.add("active");
@@ -100,6 +106,7 @@ function addToCartClicked(event){
 
     addProductToCart(title, price, img);
     computeTotal();
+    alert('Added to cart');
 }
 
 function addProductToCart(title, price, img){
@@ -164,7 +171,11 @@ function placeOrder(){
 
     let myCart = [];
     let total = {};
+    let contact = {};
+
     total['total'] = document.getElementsByClassName('total-figure')[0].innerText;
+    contact['email'] = document.getElementById('customer_email').value;
+    contact['mobile'] = document.getElementById('customer_mobile').value;
 
     for (let i = 0; i < cartBoxes.length; i++){
         let itemObject = {};
@@ -187,6 +198,7 @@ function placeOrder(){
     }
 
     myCart.push(total);
+    myCart.push(contact);
 
     Email.send({
         Host : "smtp.elasticemail.com",
@@ -197,7 +209,7 @@ function placeOrder(){
         Subject : "ORDER",
         Body : myCart
     }).then(
-      message => alert(message)
+      message => alert("Order placed successfully. Our team will get in touch with you shortly")
     );
 }
 
@@ -208,3 +220,19 @@ document.addEventListener("DOMContentLoaded", function(){
         placeOrder();
     };
 })
+
+const bar = document.getElementById('bar');
+const nav = document.getElementById('navbar-test');
+const close = document.getElementById('close');
+
+if (bar){
+    bar.addEventListener('click', () => {
+        nav.classList.add('activo');
+    })
+}
+
+if (close){
+    close.addEventListener('click', () => {
+        nav.classList.remove('activo');
+    })
+}

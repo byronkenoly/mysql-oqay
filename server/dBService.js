@@ -64,6 +64,26 @@ class DbService {
         }
     }
 
+    async showNewProducts(){
+        try {
+            const res = await new Promise((resolve, reject) => {
+                const query = "SELECT * FROM catalogue LEFT JOIN (SELECT DISTINCT id, filename, image_id FROM images) images ON catalogue.id = images.id ORDER BY catalogue.id DESC LIMIT 4;";
+
+                connection.query(query, (err, results) => {
+                    if (err){
+                        reject(new Error(err.message));
+                    }
+
+                    resolve(results);
+                })
+            });
+
+            return res;
+        } catch (err){
+            console.error(err);
+        }
+    }
+
     async insertNewProduct(product){
         try {
             const dateAdded = new Date();

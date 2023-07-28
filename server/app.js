@@ -56,6 +56,17 @@ app.get('/getAll', (req, res) => {
     .catch(err => console.error(err));
 });
 
+//new arrivals
+app.get('/newArrivals', (req, res) =>{
+    const db = dbService.getDbServiceInstance();
+
+    const result = db.showNewProducts();
+
+    result
+    .then(data => res.json({data : data}))
+    .catch(err => console.error(err))
+})
+
 //read product data to client side
 app.get('/clientProducts', (req, res) =>{
     const db = dbService.getDbServiceInstance();

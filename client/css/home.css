@@ -95,7 +95,7 @@ a.no-underline h2 {
 }
 
 .hero {
-    background:rgba(0, 0, 0, 0.7) url("../img/banner.jpg");
+    background:rgba(0, 0, 0, 0.7) url("/client_img/banner.jpg");
     background-blend-mode: darken;
     height: 84vh;
     width: 100%;

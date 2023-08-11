@@ -12,7 +12,20 @@ const dbService = require('./dBService');
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static('../client'));
+
+// Serve HTML files from the html directory
+app.use('/html', express.static(path.join(__dirname, '../client/html')));
+
+// Serve CSS files from the css directory
+app.use('/css', express.static(path.join(__dirname, '../client/css')));
+
+// Serve JS files from the js directory
+app.use('/js', express.static(path.join(__dirname, '../client/js')));
+
+// Serve img assets from the img directory
+app.use('/client_img', express.static(path.join(__dirname, '../client/img')));
+
+//app.use(express.static('../client'));
 
 const imgPath = path.join(__dirname, 'img');
 app.use('/img', express.static(imgPath));
@@ -28,9 +41,25 @@ const upload = multer({
     storage: storage
 }).single('file');
 
-app.get('/', (req, res) => {
-    res.sendFile('~/Desktop/mysql-oqay/client/html/index.html');
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/html/index.html'));
 })
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/html/home.html'));
+});
+
+app.get('/store', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/html/store.html'));
+});
+
+app.get('/about', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/html/about.html'));
+});
+
+app.get('/contact', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/html/contact.html'));
+});
 
 //create
 app.post('/insert', (req, res) => {
